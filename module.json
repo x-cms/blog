@@ -1,0 +1,10 @@
+{
+    "alias": "blog",
+    "name": "Blog",
+    "author": "xcms",
+    "description": "This is the description for the Blog module.",
+    "namespace": "Xcms\\Blog",
+    "version": "1.0",
+    "autoload": "psr-4",
+    "enabled": true
+}
