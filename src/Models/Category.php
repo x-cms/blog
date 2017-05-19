@@ -3,12 +3,15 @@
 namespace Xcms\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Nestable\NestableTrait;
 
 class Category extends Model
 {
+    use NestableTrait;
+
     protected $table = 'categories';
 
     protected $primaryKey = 'id';
 
-    protected $fillable = [];
+    protected $guarded = [];
 }

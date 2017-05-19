@@ -3,8 +3,8 @@
 namespace Xcms\Blog\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Nestable\Tests\Model\Category;
 use Xcms\Base\Http\Controllers\SystemController;
+use Xcms\Blog\Models\Category;
 
 class CategoryController extends SystemController
 {
@@ -33,7 +33,7 @@ class CategoryController extends SystemController
     public function index(Request $request)
     {
         if ($request->isMethod('post')) {
-            return Category::all()->toJson();
+            return Category::renderAsJson();
         }
 
         $this->setPageTitle('分类列表');
@@ -48,7 +48,8 @@ class CategoryController extends SystemController
      */
     public function create()
     {
-        //
+        $categories = collect(Category::renderAsArray());
+        return view('blog::categories.create', compact('categories'));
     }
 
     /**
@@ -59,7 +60,10 @@ class CategoryController extends SystemController
      */
     public function store(Request $request)
     {
-        //
+        $result = Category::create($request->all());
+        if($result){
+            return redirect()->route('categories.index')->with('success_msg', '添加分类成功');
+        }
     }
 
     /**
@@ -81,7 +85,9 @@ class CategoryController extends SystemController
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        $categories = Category::all();
+        return view('blog::categories.edit', compact('categories', 'category'));
     }
 
     /**
@@ -93,7 +99,11 @@ class CategoryController extends SystemController
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        $result = $category->update($request->all());
+        if($result){
+            return redirect()->route('categories.index')->with('success_msg', '编辑分类成功');
+        }
     }
 
     /**
@@ -104,6 +114,7 @@ class CategoryController extends SystemController
      */
     public function destroy($id)
     {
-        //
+        Category::destroy($id);
+        return response()->json(['code' => 200, 'message' => '删除标签成功']);
     }
 }
