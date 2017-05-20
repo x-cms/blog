@@ -13,7 +13,7 @@
 
 use Illuminate\Routing\Router;
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function (Router $router){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function (Router $router) {
     $router->group(['prefix' => 'posts'], function (Router $router) {
         $router->get('', 'PostController@index')
             ->name('posts.index')
@@ -72,6 +72,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function (Rout
         $router->delete('{id}', 'CategoryController@destroy')
             ->name('categories.destroy')
             ->middleware('has-permission:delete-categories');
+
+        $router->get('reorder', 'CategoryController@reorder')
+            ->name('categories.reorder')
+            ->middleware('has-permission:reorder-categories');
+
+        $router->post('reorder', 'CategoryController@reorder')
+            ->name('categories.reorder')
+            ->middleware('has-permission:reorder-categories');
     });
 
     $router->group(['prefix' => 'tags'], function (Router $router) {

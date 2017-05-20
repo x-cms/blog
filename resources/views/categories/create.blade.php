@@ -29,7 +29,8 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">上级分类</label>
                     <div class="col-md-6">
-                        <select name="parent_id" title="parent_id" class="form-control select2" data-placeholder="顶级分类">
+                        <select name="parent_id" title="parent_id" class="form-control select2">
+                            <option value="0">顶级分类</option>
                             @if(!$categories->isEmpty())
                                 @include('blog::categories.partials.select', ['collection' => $categories, 'category' => new \Xcms\Blog\Models\Category()])
                             @endif

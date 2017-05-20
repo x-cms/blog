@@ -1,15 +1,13 @@
 @foreach($collection as $k => $v)
-    {{ $category->id }}
-    {{ $category->parent_id }}
-    @if($category->id != $v->id)
-    <option value="{{ $v->id }}" {{ $category->parent_id == $v->id ? 'selected' : '' }}>
+    @if($category->id != array_get($v, 'id') && $category->id != array_get($v, 'parent_id'))
+    <option value="{{ array_get($v, 'id') }}">
         @for($i=1; $i< $loop->depth; $i++)
             —
         @endfor
-        {{ $v->name }}
+        {{ array_get($v, 'title') }}
     </option>
     @endif
-    @if(isset($categories[$v->id]))
-        @include('blog::category.partials.select', ['collection' => $categories[$v->id]])
+    @if(array_get($v, 'child'))
+        @include('blog::categories.partials.select', ['collection' => array_get($v, 'child')])
     @endif
 @endforeach

@@ -8,14 +8,9 @@
     <div class="box box-info">
         <div class="box-header with-border">
             <div class="pull-left">
-                <p>
-                    <a class="btn btn-success btn-flat " href="{{ route('categories.create') }}">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;新增
-                    </a>
-                    <a class="btn bg-purple btn-flat " href="{{ route('categories.reorder') }}">
-                        <i class="fa fa-sitemap"></i>&nbsp;&nbsp;排序
-                    </a>
-                </p>
+                <a class="btn btn-block btn-success" href="{{ route('posts.create') }}">
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;新增
+                </a>
             </div>
             <div class="pull-right">
                 <form class="search-dtGrid-form" action="">
@@ -45,29 +40,30 @@
 @push('js')
 <script>
     let dtGridColumns = [
-        {id: 'title', title: '分类名称', fastQuery: true},
+        {id: 'order', title: '排序'},
+        {id: 'title', title: '标签名称', fastQuery: true},
         {id: 'slug', title: '别名'},
-        {id: 'order', title: '排序', type:'number'},
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
-            return "<a href='categories/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
+            return "<a href='posts/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
                 "<a href='javascript:;' class='btn btn-sm btn-danger' onclick='operateHandle.del(" + record.id + ")'><i class='fa fa-trash-o'></i>&nbsp;删除&nbsp;</a>";
         }
         }
     ];
+
     let dtGridOption = {
         lang: 'zh-cn',
-        isTreeGrid: true,
         loadAll: true,
-        loadURL: '{{ route('categories.index') }}',
+        loadURL: '{{ route('posts.index') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };
+
     let operateHandle = function () {
         function _del(id) {
             var tpl = '您确定要删除该角色吗?'
             $.Confirm({
-                url: '/admin/categories/' + id,
+                url: '/admin/posts/' + id,
                 method: 'DELETE',
                 data: {
                     Id: id

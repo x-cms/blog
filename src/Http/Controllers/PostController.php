@@ -3,18 +3,42 @@
 namespace Xcms\Blog\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Xcms\Base\Http\Controllers\SystemController;
+use Xcms\Blog\Models\Post;
 
-class PostController extends Controller
+class PostController extends SystemController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware(function (Request $request, $next) {
+
+            menu()->setActiveItem('posts');
+
+            $this->breadcrumbs
+                ->addLink('内容管理')
+                ->addLink('文章列表', route('posts.index'));
+
+            return $next($request);
+        });
+
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->isMethod('post')) {
+            return Post::all()->toJson();
+        }
+
+        $this->setPageTitle('文章列表');
+
+        return view('blog::posts.index');
     }
 
     /**
@@ -24,13 +48,15 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $this->setPageTitle('添加文章');
+
+        return view('blog::posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +67,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -52,7 +78,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -63,8 +89,8 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -75,7 +101,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
