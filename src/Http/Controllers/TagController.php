@@ -28,7 +28,7 @@ class TagController extends SystemController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|string
      */
     public function index(Request $request)
     {
@@ -116,5 +116,10 @@ class TagController extends SystemController
     {
         Tag::destroy($id);
         return response()->json(['code' => 200, 'success_msg' => '删除标签成功']);
+    }
+
+    public function json()
+    {
+        return Tag::all()->pluck('title');
     }
 }

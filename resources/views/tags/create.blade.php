@@ -12,8 +12,8 @@
                     <label class="col-md-2 control-label">标签名称</label>
                     <div class="col-md-6">
                         <input type="text"
-                               name="title"
-                               title="title"
+                               name="name"
+                               title="name"
                                class="form-control"
                                autocomplete="off"
                         >

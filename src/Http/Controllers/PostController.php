@@ -4,6 +4,7 @@ namespace Xcms\Blog\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Xcms\Base\Http\Controllers\SystemController;
+use Xcms\Blog\Models\Category;
 use Xcms\Blog\Models\Post;
 
 class PostController extends SystemController
@@ -28,7 +29,7 @@ class PostController extends SystemController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|string
      */
     public function index(Request $request)
     {
@@ -49,8 +50,11 @@ class PostController extends SystemController
     public function create()
     {
         $this->setPageTitle('添加文章');
+        $categories = Category::attr(['name' => 'category_id', 'id' => 'category_id', 'class' => 'form-control select2'])
+            ->placeholder(0, '请选择文章分类')
+            ->renderAsDropdown();
 
-        return view('blog::posts.create');
+        return view('blog::posts.create', compact('categories'));
     }
 
     /**

@@ -91,6 +91,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function (Rout
             ->name('tags.index')
             ->middleware('has-permission:view-tags');
 
+        $router->get('json', 'TagController@json')
+            ->name('tags.json')
+            ->middleware('has-permission:create-tags');
+
         $router->get('create', 'TagController@create')
             ->name('tags.create')
             ->middleware('has-permission:create-tags');

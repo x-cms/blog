@@ -2,6 +2,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('vendor/core/plugins/editor/css/editormd.css') }}">
+<link href="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -55,10 +56,7 @@
                         <h3 class="box-title">文章分类</h3>
                     </div>
                     <div class="box-body">
-                        <select name="category_id" id="category_id"
-                                class="form-control select2">
-                            <option value="0">请选择文章分类</option>
-                        </select>
+                        {!! $categories !!}
                     </div>
                 </div>
                 <div class="box box-primary">
@@ -85,6 +83,8 @@
 
 @push('scripts')
 <script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
+<script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="//cdn.bootcss.com/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 @endpush
 
 @push('js')
@@ -95,6 +95,29 @@
         toolbarAutoFixed: false,
         path: "/vendor/core/plugins/editor/lib/",
         saveHTMLToTextarea: true,
+    });
+
+    let tags = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+            url: '/admin/tags/json',
+            filter: function (list) {
+                return $.map(list, function (tag) {
+                    return {name: tag};
+                });
+            }
+        }
+    });
+    tags.initialize();
+
+    $('#tags').tagsinput({
+        typeaheadjs: {
+            name: 'tags',
+            displayKey: 'name',
+            valueKey: 'name',
+            source: tags.ttAdapter()
+        }
     });
 </script>
 @endpush

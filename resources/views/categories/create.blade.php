@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">分类名称</label>
                     <div class="col-md-6">
-                        <input class="form-control" name="title" title="title">
+                        <input class="form-control" name="name" title="name">
                         <p class="help-block">这将是它在站点上显示的名字。</p>
                     </div>
                 </div>
@@ -29,12 +29,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">上级分类</label>
                     <div class="col-md-6">
-                        <select name="parent_id" title="parent_id" class="form-control select2">
-                            <option value="0">顶级分类</option>
-                            @if(!$categories->isEmpty())
-                                @include('blog::categories.partials.select', ['collection' => $categories, 'category' => new \Xcms\Blog\Models\Category()])
-                            @endif
-                        </select>
+                        {!! $categories !!}
                     </div>
                 </div>
                 <div class="form-group last">

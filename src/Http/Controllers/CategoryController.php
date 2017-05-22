@@ -49,7 +49,10 @@ class CategoryController extends SystemController
     public function create()
     {
         $this->setPageTitle('添加分类');
-        $categories = collect(Category::renderAsArray());
+        $categories = Category::attr(['name' => 'parent_id', 'class' => 'form-control select2'])
+            ->placeholder(0, '顶级分类')
+            ->renderAsDropdown();
+
         return view('blog::categories.create', compact('categories'));
     }
 
@@ -88,7 +91,10 @@ class CategoryController extends SystemController
     {
         $this->setPageTitle('编辑分类');
         $category = Category::find($id);
-        $categories = Category::all();
+        $categories = Category::attr(['name' => 'parent_id', 'class' => 'form-control select2'])
+            ->placeholder(0, '顶级分类')
+            ->selected($category->parent_id)
+            ->renderAsDropdown();
 
         return view('blog::categories.edit', compact('categories', 'category'));
     }
