@@ -39,10 +39,10 @@
 
 @push('js')
 <script>
-    var dtGridColumns = [
-        {id: 'order', title: '排序'},
+    let dtGridColumns = [
         {id: 'title', title: '标签名称', fastQuery: true},
         {id: 'slug', title: '别名'},
+        {id: 'order', title: '排序'},
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
             return "<a href='tags/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +
@@ -50,16 +50,18 @@
         }
         }
     ];
-    var dtGridOption = {
+
+    let dtGridOption = {
         lang: 'zh-cn',
         loadAll: true,
         loadURL: '{{ route('tags.index') }}',
         columns: dtGridColumns,
         tools: 'refresh|fastQuery',
     };
-    var operateHandle = function () {
+
+    let operateHandle = function () {
         function _del(id) {
-            var tpl = '您确定要删除该角色吗?'
+            let tpl = '您确定要删除该角色吗?'
             $.Confirm({
                 url: '/admin/tags/' + id,
                 method: 'DELETE',
@@ -74,7 +76,9 @@
             del: _del
         }
     }();
-    var grid = $.fn.dtGrid.init(dtGridOption);
+
+    let grid = $.fn.dtGrid.init(dtGridOption);
+
     $(function () {
         grid.load();
     });

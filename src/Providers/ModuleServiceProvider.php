@@ -47,6 +47,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadHelpers();
 
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(MiddlewareServiceProvider::class);
     }
 
     protected function loadHelpers()

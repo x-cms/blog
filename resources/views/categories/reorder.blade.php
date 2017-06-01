@@ -1,5 +1,9 @@
 @extends('base::layouts.master')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('vendor/core/css/category-nestable.css') }}"></link>
+@endpush
+
 @section('content')
 <div class="box box-info">
     <div class="box-header with-border">

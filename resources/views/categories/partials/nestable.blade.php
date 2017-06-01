@@ -3,7 +3,7 @@
         <li class="dd-item dd3-item" data-id="{{ array_get($category, 'id') }}">
             <div class="dd-handle dd3-handle"></div>
             <div class="dd3-content">
-                <span>{{ array_get($category, 'title') }}</span>
+                <span>{{ array_get($category, 'name') }}</span>
                 {{--<div class="pull-right">--}}
                     {{--<a href="{{ route('categories.edit', array_get($category, 'id')) }}"><i class="fa fa-edit"></i></a>--}}
                     {{--<a href="javascript:;" onclick="del({{ array_get($category, 'id') }})"><i class="fa fa-trash"></i></a>--}}
