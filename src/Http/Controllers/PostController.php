@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Xcms\Base\Http\Controllers\SystemController;
 use Xcms\Blog\Models\Category;
 use Xcms\Blog\Models\Post;
+use Xcms\Blog\Models\Tag;
 
 class PostController extends SystemController
 {
@@ -65,7 +66,29 @@ class PostController extends SystemController
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post();
+        $post->category_id = $request->category_id;
+        $post->title = $request->title;
+        $post->slug = $request->slug;
+        $post->content_markdown = $request->input('editormd-markdown-doc');
+        $post->content_html = $request->input('editormd-html-code');
+
+        $post->save();
+
+        if ($request->tags != null && $request->tags != '') {
+            $tagInputs = explode(',', $request->tags);
+            foreach ($tagInputs as $tagName) {
+                $tag = Tag::where('name', $tagName)->first();
+                if ($tag === null) {
+                    $tag = new Tag();
+                    $tag->name = $tagName;
+                    $tag->save();
+                }
+                $post->tags()->attach($tag->id);
+            }
+        }
+
+        return redirect()->route('posts.index')->with('success_msg', '添加文章成功');
     }
 
     /**
@@ -87,7 +110,19 @@ class PostController extends SystemController
      */
     public function edit($id)
     {
-        //
+        $post = Post::with('tags')->find($id);
+
+        $categories = Category::attr(['name' => 'category_id', 'id' => 'category_id', 'class' => 'form-control select2'])
+            ->placeholder(0, '请选择文章分类')
+            ->selected($post->category_id)
+            ->renderAsDropdown();
+
+        $tags = '';
+        foreach ($post->tags as $tag) {
+            $tags .= $tag->name . ',';
+        }
+
+        return view('blog::posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**

@@ -18,14 +18,17 @@ class CreatePostsTable extends Migration
             $table->integer('category_id');
             $table->string('title')->unique();
             $table->string('slug');
-            $table->string('image')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->string('description')->nullable();
             $table->text('content_markdown')->nullable();
             $table->text('content_html')->nullable();
             $table->tinyInteger('status')->unsigned()->default(1);
+            $table->integer('order')->unsigned()->default(0);
+            $table->timestamp('publish_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
+
     }
 
     /**

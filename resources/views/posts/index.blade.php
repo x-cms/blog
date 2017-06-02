@@ -40,9 +40,10 @@
 @push('js')
 <script>
     let dtGridColumns = [
+        {id: 'title', title: '文章标题', fastQuery: true},
         {id: 'order', title: '排序'},
-        {id: 'title', title: '标签名称', fastQuery: true},
-        {id: 'slug', title: '别名'},
+        {id: 'create_at', title: '创建时间'},
+        {id: 'publish_at', title: '发布时间'},
         {
             id: 'operation', title: '管理操作', resolution: function (value, record, column, grid, dataNo, columnNo) {
             return "<a href='posts/edit/" + record.id + "' class='btn btn-sm btn-warning m-r-5'><i class='fa fa-edit'></i>&nbsp;编辑&nbsp;</a>" +

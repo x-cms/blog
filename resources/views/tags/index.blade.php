@@ -40,7 +40,7 @@
 @push('js')
 <script>
     let dtGridColumns = [
-        {id: 'title', title: '标签名称', fastQuery: true},
+        {id: 'name', title: '标签名称', fastQuery: true},
         {id: 'slug', title: '别名'},
         {id: 'order', title: '排序'},
         {

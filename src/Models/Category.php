@@ -14,4 +14,10 @@ class Category extends Model
     protected $primaryKey = 'id';
 
     protected $guarded = [];
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
 }

@@ -120,6 +120,6 @@ class TagController extends SystemController
 
     public function json()
     {
-        return Tag::all()->pluck('title');
+        return Tag::all()->pluck('name');
     }
 }

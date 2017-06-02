@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    <form class="form-horizontal form-bordered" method="post" action="{{ route('posts.store') }}">
+    <form class="form-horizontal form-bordered" method="post" action="{{ route('posts.update', ['id' => $post->id]) }}">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-9">
@@ -23,6 +23,7 @@
                                        title="title"
                                        class="form-control"
                                        autocomplete="off"
+                                       value="{{ $post->title }}"
                                 >
                             </div>
                         </div>
@@ -34,6 +35,7 @@
                                        title="slug"
                                        class="form-control"
                                        autocomplete="off"
+                                       value="{{ $post->slug }}"
                                 >
                             </div>
                         </div>
@@ -60,7 +62,8 @@
                         <h3 class="box-title">标签</h3>
                     </div>
                     <div class="box-body">
-                        <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput"/>
+                        <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput"
+                               value="{{ $tags }}"/>
                     </div>
                 </div>
                 <div class="box box-primary">
@@ -79,8 +82,8 @@
 
 @push('scripts')
 <script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
-<script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="//cdn.bootcss.com/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 @endpush
 
 @push('js')
@@ -105,7 +108,6 @@
             }
         }
     });
-
     tags.initialize();
 
     $('#tags').tagsinput({
@@ -114,7 +116,7 @@
             displayKey: 'name',
             valueKey: 'name',
             source: tags.ttAdapter()
-        }
+        },
     });
 </script>
 @endpush
