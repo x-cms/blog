@@ -37,6 +37,12 @@
                                 >
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">文章摘要</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" name="description" rows="5"></textarea>
+                            </div>
+                        </div>
                         <div class="form-group last">
                             <label class="col-md-2 control-label">文章内容</label>
                             <div class="col-md-10">
@@ -60,7 +66,15 @@
                         <h3 class="box-title">标签</h3>
                     </div>
                     <div class="box-body">
-                        <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput"/>
+                        <select id="tags" name="tags[]" multiple data-role="tagsinput"></select>
+                    </div>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">排序</h3>
+                    </div>
+                    <div class="box-body">
+                        <input type="text" name="order" class="form-control" value="0"/>
                     </div>
                 </div>
                 <div class="box box-primary">
@@ -78,26 +92,18 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
 <script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="//cdn.bootcss.com/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
 @endpush
 
 @push('js')
 <script>
-    let editor = editormd({
-        id: "editormd",
-        height: 640,
-        toolbarAutoFixed: false,
-        path: "/vendor/core/plugins/editor/lib/",
-        saveHTMLToTextarea: true,
-    });
-
     let tags = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-            url: '/admin/tags/json',
+            url: '{{ route('tags.json') }}',
             filter: function (list) {
                 return $.map(list, function (tag) {
                     return {name: tag};
@@ -115,6 +121,14 @@
             valueKey: 'name',
             source: tags.ttAdapter()
         }
+    });
+
+    let editor = editormd({
+        id: "editormd",
+        height: 640,
+        toolbarAutoFixed: false,
+        path: "/vendor/core/plugins/editor/lib/",
+        saveHTMLToTextarea: true,
     });
 </script>
 @endpush

@@ -39,10 +39,19 @@
                                 >
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">文章摘要</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" name="description"
+                                          rows="5">{{ $post->description }}</textarea>
+                            </div>
+                        </div>
                         <div class="form-group last">
                             <label class="col-md-2 control-label">文章内容</label>
                             <div class="col-md-10">
-                                <div id="editormd"></div>
+                                <div id="editormd">
+                                    <textarea name="editormd-markdown-doc">{{ $post->content_markdown }}</textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -62,8 +71,19 @@
                         <h3 class="box-title">标签</h3>
                     </div>
                     <div class="box-body">
-                        <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput"
-                               value="{{ $tags }}"/>
+                        <select id="tags" name="tags[]" multiple data-role="tagsinput">
+                            @foreach($post->tags as $tag)
+                                <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">排序</h3>
+                    </div>
+                    <div class="box-body">
+                        <input type="text" name="order" class="form-control" value="{{ $post->order }}"/>
                     </div>
                 </div>
                 <div class="box box-primary">
@@ -100,7 +120,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-            url: '/admin/tags/json',
+            url: '{{ route('tags.json') }}',
             filter: function (list) {
                 return $.map(list, function (tag) {
                     return {name: tag};

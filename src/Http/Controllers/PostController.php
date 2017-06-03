@@ -66,22 +66,24 @@ class PostController extends SystemController
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $post = new Post();
         $post->category_id = $request->category_id;
         $post->title = $request->title;
         $post->slug = $request->slug;
+        $post->description = $request->description;
         $post->content_markdown = $request->input('editormd-markdown-doc');
         $post->content_html = $request->input('editormd-html-code');
+        $post->order = $request->order;
 
         $post->save();
 
-        if ($request->tags != null && $request->tags != '') {
-            $tagInputs = explode(',', $request->tags);
-            foreach ($tagInputs as $tagName) {
-                $tag = Tag::where('name', $tagName)->first();
+        if ($request->tags != null) {
+            foreach ($request->tags as $item) {
+                $tag = Tag::where('name', $item)->first();
                 if ($tag === null) {
                     $tag = new Tag();
-                    $tag->name = $tagName;
+                    $tag->name = $item;
                     $tag->save();
                 }
                 $post->tags()->attach($tag->id);
@@ -117,12 +119,7 @@ class PostController extends SystemController
             ->selected($post->category_id)
             ->renderAsDropdown();
 
-        $tags = '';
-        foreach ($post->tags as $tag) {
-            $tags .= $tag->name . ',';
-        }
-
-        return view('blog::posts.edit', compact('post', 'categories', 'tags'));
+        return view('blog::posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -134,7 +131,31 @@ class PostController extends SystemController
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+        $post->category_id = $request->category_id;
+        $post->title = $request->title;
+        $post->slug = $request->slug;
+        $post->description = $request->description;
+        $post->content_markdown = $request->input('editormd-markdown-doc');
+        $post->content_html = $request->input('editormd-html-code');
+        $post->order = $request->order;
+
+        $post->save();
+
+        if ($request->tags != null) {
+            $post->tags()->detach();
+            foreach ($request->tags as $tagName) {
+                $tag = Tag::where('name', $tagName)->first();
+                if ($tag === null) {
+                    $tag = new Tag();
+                    $tag->name = $tagName;
+                    $tag->save();
+                }
+                $post->tags()->attach($tag->id);
+            }
+        }
+
+        return redirect()->route('posts.index')->with('success_msg', '编辑文章成功');
     }
 
     /**
@@ -145,6 +166,7 @@ class PostController extends SystemController
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        return response()->json(['code' => 200, 'message' => '删除文章成功']);
     }
 }
