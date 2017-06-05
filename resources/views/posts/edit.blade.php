@@ -3,6 +3,7 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('vendor/core/plugins/editor/css/editormd.css') }}">
 <link href="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 @endpush
 
 @section('content')
@@ -90,9 +91,22 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">发布</h3>
                     </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="coltrol-label">文章状态</label>
+                            <select name="status" class="form-control">
+                                <option value="0"  {{ $post->status == 0 ? 'selected' : '' }}>草稿</option>
+                                <option value="1"  {{ $post->status == 1 ? 'selected' : '' }}>发布</option>
+                            </select>
+                        </div>
+                        <div class="form-group m-t-15">
+                            <label>发布时间</label>
+                            <input name="published_at" type="text" class="form-control" id="datetimepicker"  value="{{ $post->published_at }}">
+                        </div>
+                    </div>
                     <div class="box-footer">
-                        <button type="submit" name="submit" class="btn btn-primary" value="1">保存草稿</button>
-                        <button type="submit" name="submit" class="btn btn-primary" value="2">确认发布</button>
+                        <a class="btn btn-primary" href="{{ route('posts.index') }}">返回列表</a>
+                        <button type="submit" class="btn btn-primary">确认操作</button>
                     </div>
                 </div>
             </div>
@@ -104,6 +118,9 @@
 <script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
 <script src="//cdn.bootcss.com/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.18.1/locale/zh-cn.js"></script>
+<script src="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 @endpush
 
 @push('js')
@@ -128,6 +145,7 @@
             }
         }
     });
+
     tags.initialize();
 
     $('#tags').tagsinput({
@@ -137,6 +155,10 @@
             valueKey: 'name',
             source: tags.ttAdapter()
         },
+    });
+
+    $('#datetimepicker').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss'
     });
 </script>
 @endpush

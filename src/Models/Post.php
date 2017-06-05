@@ -21,7 +21,8 @@ class Post extends Model
     {
         $params = array_merge([
             'condition' => [
-                'category_id' => $categoryId
+                'category_id' => $categoryId,
+                'status' => 1
             ],
             'order_by' => [
                 'posts.order' => 'ASC',
@@ -33,11 +34,11 @@ class Post extends Model
                 'current_paged' => 1
             ],
             'select' => [
-                'posts.id', 'posts.title', 'posts.slug', 'posts.publish_at', 'posts.created_at', 'posts.updated_at',
+                'posts.id', 'posts.title', 'posts.slug', 'posts.published_at', 'posts.created_at', 'posts.updated_at',
                 'posts.content_markdown', 'posts.content_html', 'posts.description', 'posts.order', 'posts.thumbnail',
             ],
             'group_by' => [
-                'posts.id', 'posts.title', 'posts.slug', 'posts.publish_at', 'posts.created_at', 'posts.updated_at',
+                'posts.id', 'posts.title', 'posts.slug', 'posts.published_at', 'posts.created_at', 'posts.updated_at',
                 'posts.content_markdown', 'posts.content_html', 'posts.description', 'posts.order', 'posts.thumbnail'
             ],
             'with' => [

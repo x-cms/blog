@@ -2,6 +2,7 @@
 
 namespace Xcms\Blog\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Xcms\Base\Http\Controllers\SystemController;
 use Xcms\Blog\Models\Category;
@@ -66,7 +67,6 @@ class PostController extends SystemController
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $post = new Post();
         $post->category_id = $request->category_id;
         $post->title = $request->title;
@@ -75,6 +75,8 @@ class PostController extends SystemController
         $post->content_markdown = $request->input('editormd-markdown-doc');
         $post->content_html = $request->input('editormd-html-code');
         $post->order = $request->order;
+        $post->status = $request->status;
+        $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
 
         $post->save();
 
@@ -139,6 +141,8 @@ class PostController extends SystemController
         $post->content_markdown = $request->input('editormd-markdown-doc');
         $post->content_html = $request->input('editormd-html-code');
         $post->order = $request->order;
+        $post->status = $request->status;
+        $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
 
         $post->save();
 
