@@ -8,6 +8,7 @@ use Xcms\Base\Http\Controllers\SystemController;
 use Xcms\Blog\Models\Category;
 use Xcms\Blog\Models\Post;
 use Xcms\Blog\Models\Tag;
+use Xcms\Media\Models\File;
 
 class PostController extends SystemController
 {
@@ -67,6 +68,7 @@ class PostController extends SystemController
      */
     public function store(Request $request)
     {
+
         $post = new Post();
         $post->category_id = $request->category_id;
         $post->title = $request->title;
@@ -77,7 +79,11 @@ class PostController extends SystemController
         $post->order = $request->order;
         $post->status = $request->status;
         $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
-
+        if ($request->hasFile('image')) {
+            $file = new File();
+            $result = $file->fromPost($request->file('image'));
+            dd($result);
+        }
         $post->save();
 
         if ($request->tags != null) {

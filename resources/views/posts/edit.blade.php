@@ -1,9 +1,16 @@
 @extends('base::layouts.master')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('vendor/core/plugins/editor/css/editormd.css') }}">
-<link href="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-fileinput/4.3.8/css/fileinput.min.css">
 <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="{{ asset('vendor/core/plugins/editor/css/editormd.css') }}">
+@endpush
+
+@push('css')
+<link rel="stylesheet" href="{{ asset('vendor/core/media/css/storm.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/core/media/css/october.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/core/media/css/mediamanager.css') }}">
 @endpush
 
 @section('content')
@@ -89,6 +96,15 @@
                 </div>
                 <div class="box box-primary">
                     <div class="box-header with-border">
+                        <h3 class="box-title">文章封面</h3>
+                    </div>
+                    <div class="box-body">
+                        <input id="image" type="file" name="image" data-show-upload="false"
+                               data-allowed-file-extensions='["jpg", "png", "gif"]' value="{{ $post->thumbnail }}">
+                    </div>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
                         <h3 class="box-title">发布</h3>
                     </div>
                     <div class="box-body">
@@ -115,12 +131,18 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
 <script src="//cdn.bootcss.com/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="//cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
 <script src="//cdn.bootcss.com/moment.js/2.18.1/locale/zh-cn.js"></script>
 <script src="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap-fileinput/4.3.8/js/fileinput.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap-fileinput/4.3.8/js/locales/zh.min.js"></script>
+<script src="{{ asset('vendor/core/plugins/editor/editormd.js') }}"></script>
+<script src="{{ asset('vendor/core/media/js/framework.js') }}"></script>
+<script src="{{ asset('vendor/core/media/js/storm-min.js') }}"></script>
+<script src="{{ asset('vendor/core/media/js/october-min.js') }}"></script>
+<script src="{{ asset('vendor/core/media/js/mediamanager-browser-min.js') }}"></script>
 @endpush
 
 @push('js')
@@ -155,6 +177,10 @@
             valueKey: 'name',
             source: tags.ttAdapter()
         },
+    });
+
+    $("#image").fileinput({
+        language: "zh",
     });
 
     $('#datetimepicker').datetimepicker({
