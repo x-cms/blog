@@ -74,17 +74,23 @@ class PostController extends SystemController
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->description = $request->description;
-        $post->content_markdown = $request->input('editormd-markdown-doc');
+        $post->content = $request->input('editormd-markdown-doc');
         $post->content_html = $request->input('editormd-html-code');
         $post->order = $request->order;
         $post->status = $request->status;
         $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
+        $post->save();
+
         if ($request->hasFile('image')) {
             $file = new File();
-            $result = $file->fromPost($request->file('image'));
-            dd($result);
+            $file->data = $request->file('image');
+            $file->is_public = true;
+            $file->field = 'thumbnail';
+            $file->attachment_id = $post->id;
+            $file->attachment_type = 'Post';
+            $file->beforeSave();
+            $file->save();
         }
-        $post->save();
 
         if ($request->tags != null) {
             foreach ($request->tags as $item) {
@@ -144,13 +150,24 @@ class PostController extends SystemController
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->description = $request->description;
-        $post->content_markdown = $request->input('editormd-markdown-doc');
+        $post->content = $request->input('editormd-markdown-doc');
         $post->content_html = $request->input('editormd-html-code');
         $post->order = $request->order;
         $post->status = $request->status;
         $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
 
         $post->save();
+
+        if ($request->hasFile('image')) {
+            $file = new File();
+            $file->data = $request->file('image');
+            $file->is_public = true;
+            $file->field = 'thumbnail';
+            $file->attachment_id = $post->id;
+            $file->attachment_type = 'Post';
+            $file->beforeSave();
+            $file->save();
+        }
 
         if ($request->tags != null) {
             $post->tags()->detach();
