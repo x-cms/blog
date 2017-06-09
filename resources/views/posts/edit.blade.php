@@ -14,7 +14,7 @@
 @endpush
 
 @section('content')
-    <form class="form-horizontal form-bordered" method="post" action="{{ route('posts.update', ['id' => $post->id]) }}">
+    <form class="form-horizontal form-bordered" method="post" enctype="multipart/form-data" action="{{ route('posts.update', ['id' => $post->id]) }}">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-9">
@@ -58,7 +58,7 @@
                             <label class="col-md-2 control-label">文章内容</label>
                             <div class="col-md-10">
                                 <div id="editormd">
-                                    <textarea name="editormd-markdown-doc">{{ $post->content_markdown }}</textarea>
+                                    <textarea name="editormd-markdown-doc">{{ $post->content }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                         <h3 class="box-title">文章封面</h3>
                     </div>
                     <div class="box-body">
-                        <input id="image" type="file" name="image" data-show-upload="false"
+                        <input id="image" class="file-loading" type="file" name="image[]" multiple data-show-upload="false"
                                data-allowed-file-extensions='["jpg", "png", "gif"]' value="{{ $post->thumbnail }}">
                     </div>
                 </div>
@@ -181,6 +181,8 @@
 
     $("#image").fileinput({
         language: "zh",
+        uploadUrl: '{{ route('posts.upload') }}',
+        uploadAsync: true
     });
 
     $('#datetimepicker').datetimepicker({

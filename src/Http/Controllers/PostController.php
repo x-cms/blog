@@ -86,10 +86,8 @@ class PostController extends SystemController
             $file->data = $request->file('image');
             $file->is_public = true;
             $file->field = 'thumbnail';
-            $file->attachment_id = $post->id;
-            $file->attachment_type = 'Post';
             $file->beforeSave();
-            $file->save();
+            $post->files()->save($file);
         }
 
         if ($request->tags != null) {
@@ -127,7 +125,6 @@ class PostController extends SystemController
     public function edit($id)
     {
         $post = Post::with('tags')->find($id);
-
         $categories = Category::attr(['name' => 'category_id', 'id' => 'category_id', 'class' => 'form-control select2'])
             ->placeholder(0, '请选择文章分类')
             ->selected($post->category_id)
@@ -157,16 +154,22 @@ class PostController extends SystemController
         $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
 
         $post->save();
+        dd($request->all());
+        foreach ($post->files as $item) {
+            $file = new File();
+            $file->destroy($item->id);
+            $file->id = $item->id;
+            $file->disk_name = $item->disk_name;
+            $file->afterDelete();
+        }
 
         if ($request->hasFile('image')) {
             $file = new File();
             $file->data = $request->file('image');
             $file->is_public = true;
             $file->field = 'thumbnail';
-            $file->attachment_id = $post->id;
-            $file->attachment_type = 'Post';
             $file->beforeSave();
-            $file->save();
+            $post->files()->save($file);
         }
 
         if ($request->tags != null) {

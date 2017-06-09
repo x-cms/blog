@@ -17,6 +17,11 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function files()
+    {
+        return $this->morphMany('Xcms\Media\Models\File', 'attachment');
+    }
+
     public function getPostsByCategory($categoryId, array $params = [])
     {
         $params = array_merge([

@@ -42,6 +42,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admin'], function (Rout
         $router->delete('{id}', 'PostController@destroy')
             ->name('posts.destroy')
             ->middleware('has-permission:delete-posts');
+
+        $router->post('upload', 'PostController@upload')
+            ->name('posts.upload');
     });
 
     $router->group(['prefix' => 'categories'], function (Router $router) {
