@@ -99,8 +99,8 @@
                         <h3 class="box-title">文章封面</h3>
                     </div>
                     <div class="box-body">
-                        <input id="image" class="file-loading" type="file" name="image[]" multiple data-show-upload="false"
-                               data-allowed-file-extensions='["jpg", "png", "gif"]' value="{{ $post->thumbnail }}">
+                        <input id="images" type="file" name="images[]" multiple data-show-upload="false"
+                               data-allowed-file-extensions='["jpg", "png", "gif"]'>
                     </div>
                 </div>
                 <div class="box box-primary">
@@ -179,10 +179,10 @@
         },
     });
 
-    $("#image").fileinput({
+    $("#images").fileinput({
         language: "zh",
-        uploadUrl: '{{ route('posts.upload') }}',
-        uploadAsync: true
+        {{--uploadUrl: '{{ route('posts.upload') }}',--}}
+        {{--uploadAsync: true--}}
     });
 
     $('#datetimepicker').datetimepicker({
