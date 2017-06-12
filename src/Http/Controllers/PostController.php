@@ -81,13 +81,15 @@ class PostController extends SystemController
         $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
         $post->save();
 
-        if ($request->hasFile('image')) {
-            $file = new File();
-            $file->data = $request->file('image');
-            $file->is_public = true;
-            $file->field = 'thumbnail';
-            $file->beforeSave();
-            $post->files()->save($file);
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $image) {
+                $file = new File();
+                $file->data = $image;
+                $file->is_public = true;
+                $file->field = 'thumbnail';
+                $file->beforeSave();
+                $post->files()->save($file);
+            }
         }
 
         if ($request->tags != null) {
@@ -154,7 +156,7 @@ class PostController extends SystemController
         $post->published_at = $request->published_at ? $request->published_at : Carbon::now();
 
         $post->save();
-        dd($request->all());
+
         foreach ($post->files as $item) {
             $file = new File();
             $file->destroy($item->id);
@@ -163,13 +165,15 @@ class PostController extends SystemController
             $file->afterDelete();
         }
 
-        if ($request->hasFile('image')) {
-            $file = new File();
-            $file->data = $request->file('image');
-            $file->is_public = true;
-            $file->field = 'thumbnail';
-            $file->beforeSave();
-            $post->files()->save($file);
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $image) {
+                $file = new File();
+                $file->data = $image;
+                $file->is_public = true;
+                $file->field = 'thumbnail';
+                $file->beforeSave();
+                $post->files()->save($file);
+            }
         }
 
         if ($request->tags != null) {

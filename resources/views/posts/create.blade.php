@@ -89,7 +89,7 @@
                         <h3 class="box-title">文章封面</h3>
                     </div>
                     <div class="box-body">
-                        <input id="image" type="file" name="image" data-show-upload="false"
+                        <input id="image" type="file" name="images[]" multiple data-show-upload="false"
                                data-allowed-file-extensions='["jpg", "png", "gif"]'>
                     </div>
                 </div>
@@ -167,6 +167,7 @@
 
     $("#image").fileinput({
         language: "zh",
+
     });
 
     let editor = editormd({

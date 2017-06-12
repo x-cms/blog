@@ -181,8 +181,13 @@
 
     $("#images").fileinput({
         language: "zh",
-        {{--uploadUrl: '{{ route('posts.upload') }}',--}}
-        {{--uploadAsync: true--}}
+        initialPreview: [
+            @foreach($post->files as $file)
+             '{{ $file->getPath() }}',
+            @endforeach
+        ],
+        initialPreviewAsData: true,
+        overwriteInitial: true,
     });
 
     $('#datetimepicker').datetimepicker({
