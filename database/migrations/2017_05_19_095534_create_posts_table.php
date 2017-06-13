@@ -21,6 +21,7 @@ class CreatePostsTable extends Migration
             $table->string('description')->nullable();
             $table->text('content')->nullable();
             $table->text('content_html')->nullable();
+            $table->string('type')->nullable();
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->integer('order')->unsigned()->default(0);
             $table->timestamp('published_at')->nullable();

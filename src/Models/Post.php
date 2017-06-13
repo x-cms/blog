@@ -39,12 +39,12 @@ class Post extends Model
                 'current_paged' => 1
             ],
             'select' => [
-                'posts.id', 'posts.title', 'posts.slug', 'posts.published_at', 'posts.created_at', 'posts.updated_at',
-                'posts.content_markdown', 'posts.content_html', 'posts.description', 'posts.order', 'posts.thumbnail',
+                'posts.id', 'posts.category_id', 'posts.title', 'posts.slug', 'posts.published_at', 'posts.created_at', 'posts.updated_at',
+                'posts.content', 'posts.content_html', 'posts.description', 'posts.order',
             ],
             'group_by' => [
-                'posts.id', 'posts.title', 'posts.slug', 'posts.published_at', 'posts.created_at', 'posts.updated_at',
-                'posts.content_markdown', 'posts.content_html', 'posts.description', 'posts.order', 'posts.thumbnail'
+                'posts.id', 'posts.category_id', 'posts.title', 'posts.slug', 'posts.published_at', 'posts.created_at', 'posts.updated_at',
+                'posts.content', 'posts.content_html', 'posts.description', 'posts.order',
             ],
             'with' => [
 
@@ -78,5 +78,11 @@ class Post extends Model
         }
 
         return $model->get();
+    }
+
+    public function getTemplateAttribute()
+    {
+        $category = Category::find($this->category_id);
+        return $category->template;
     }
 }
